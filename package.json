@@ -1,0 +1,17 @@
+{
+  "name": "whatsapp-client-bot",
+  "version": "1.0.0",
+  "description": "WhatsApp Business chatbot with Claude for auto-replies, briefs, and human handoff",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "@anthropic-ai/sdk": "^0.32.1",
+    "dotenv": "^16.4.5",
+    "better-sqlite3": "^11.3.0"
+  }
+}
