@@ -15,6 +15,11 @@ db.exec(`
     key TEXT PRIMARY KEY,
     value TEXT NOT NULL
   );
+
+  CREATE TABLE IF NOT EXISTS client_state (
+    phone TEXT PRIMARY KEY,
+    muted INTEGER DEFAULT 0
+  );
 `);
 
 // Bot is active by default
@@ -44,6 +49,18 @@ export function setBotActive(active) {
     INSERT INTO settings (key, value) VALUES ('bot_active', ?)
     ON CONFLICT(key) DO UPDATE SET value = excluded.value
   `).run(active ? '1' : '0');
+}
+
+export function isMuted(phone) {
+  const row = db.prepare(`SELECT muted FROM client_state WHERE phone = ?`).get(phone);
+  return row ? row.muted === 1 : false;
+}
+
+export function setMuted(phone, muted) {
+  db.prepare(`
+    INSERT INTO client_state (phone, muted) VALUES (?, ?)
+    ON CONFLICT(phone) DO UPDATE SET muted = excluded.muted
+  `).run(phone, muted ? 1 : 0);
 }
 
 export default db;
